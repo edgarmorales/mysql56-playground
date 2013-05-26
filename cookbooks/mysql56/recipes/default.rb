@@ -1,4 +1,4 @@
-DOWNLOAD_DIR = '/tmp/downloads'
+DOWNLOAD_DIR = '/vagrant/downloaded'
 MYSQL_DOWNLOAD_URL = 'http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.10-debian6.0-x86_64.deb'
 MYSQL_DOWNLOAD_FILE = "#{DOWNLOAD_DIR}/mysql-5.6.10-debian6.0-x86_64.deb"
 
@@ -44,10 +44,3 @@ script 'install MySQL 5.6' do
   SCRIPT
 end
 
-script 'load timezones' do
-  interpreter 'bash'
-  user 'root'
-  code <<-SCRIPT
-    /opt/mysql/server-5.6/bin/mysql_tzinfo_to_sql /usr/share/zoneinfo |mysql -u root mysql
-  SCRIPT
-end
