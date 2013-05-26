@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: apt
-# Recipe:: cacher-ng
+# Cookbook Name:: apt_test
+# Recipe:: default
 #
-# Copyright 2008-2012, Opscode, Inc.
+# Copyright 2012, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,24 +17,12 @@
 # limitations under the License.
 #
 
-node.set['apt']['caching_server'] = true
+require File.expand_path('../support/helpers', __FILE__)
 
-package "apt-cacher-ng" do
-  action :install
+describe "apt_test::default" do
+  include Helpers::AptTest
+
+  it 'creates the preseeding directory' do
+    directory('/var/cache/local/preseeding').must_exist
+  end
 end
-
-template "/etc/apt-cacher-ng/acng.conf" do
-  source "acng.conf.erb"
-  owner "root"
-  group "root"
-  mode 00644
-  notifies :restart, "service[apt-cacher-ng]"
-end
-
-service "apt-cacher-ng" do
-  supports :restart => true, :status => false
-  action [:enable, :start]
-end
-
-#this will help seed the proxy
-include_recipe "apt::cacher-client"
